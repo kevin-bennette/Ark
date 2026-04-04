@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .glass {
+    @apply bg-dark-800/60 backdrop-blur-md border border-white/5;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
