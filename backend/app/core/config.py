@@ -9,17 +9,19 @@ class Settings(BaseSettings):
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "postgres"
     POSTGRES_DB: str = "ark"
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@db:5432/ark"
+    DATABASE_URL: str = "postgresql+psycopg://postgres:postgres@db:5432/ark"
 
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
     def assemble_db_url(cls, v: str) -> str:
         if v:
-            # Ensure it uses the asyncpg driver
+            # Ensure it uses the psycopg driver (works with PgBouncer)
             if v.startswith("postgres://"):
-                return v.replace("postgres://", "postgresql+asyncpg://", 1)
-            elif v.startswith("postgresql://") and "+asyncpg" not in v:
-                return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+                return v.replace("postgres://", "postgresql+psycopg://", 1)
+            elif v.startswith("postgresql://") and "+" not in v.split("://")[0]:
+                return v.replace("postgresql://", "postgresql+psycopg://", 1)
+            elif "+asyncpg" in v:
+                return v.replace("+asyncpg", "+psycopg")
         return v
 
     # Redis / Celery
