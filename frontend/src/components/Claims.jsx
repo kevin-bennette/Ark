@@ -83,7 +83,7 @@ export default function Claims({ user }) {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="card">
                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Total Paid</p>
-               <p className="text-2xl font-bold text-amber-700">${totalPaid > 0 ? totalPaid.toFixed(2) : '12,450.00'}</p>
+               <p className="text-2xl font-bold text-amber-700">₹{totalPaid > 0 ? totalPaid.toFixed(2) : '12,450.00'}</p>
             </div>
             <div className="card">
                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Active Claims</p>
@@ -91,7 +91,7 @@ export default function Claims({ user }) {
             </div>
             <div className="card">
                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Avg. Payout</p>
-               <p className="text-2xl font-bold text-dark">${avgPayout > 0 ? avgPayout.toFixed(0) : '1,556'}</p>
+               <p className="text-2xl font-bold text-dark">₹{avgPayout > 0 ? avgPayout.toFixed(0) : '1,556'}</p>
             </div>
           </div>
 
@@ -121,7 +121,7 @@ export default function Claims({ user }) {
                         </div>
                      </div>
                      <div className="flex flex-col items-end gap-1">
-                        <span className="font-bold text-dark">$4,500.00</span>
+                        <span className="font-bold text-dark">₹4,500.00</span>
                         <ChevronRight size={16} className="text-gray-400" />
                      </div>
                   </div>
@@ -141,8 +141,9 @@ export default function Claims({ user }) {
                         </div>
                      </div>
                      <div className="flex flex-col items-end gap-1">
-                        <span className="font-bold text-dark">$1,200.00</span>
+                        <span className="font-bold text-dark">₹1,200.00</span>
                         <ChevronRight size={16} className="text-gray-400" />
+
                      </div>
                   </div>
 
@@ -161,7 +162,7 @@ export default function Claims({ user }) {
                         </div>
                      </div>
                      <div className="flex flex-col items-end gap-1">
-                        <span className="font-bold text-gray-500 line-through">$850.00</span>
+                        <span className="font-bold text-gray-500 line-through">₹850.00</span>
                         <ChevronRight size={16} className="text-gray-400" />
                      </div>
                   </div>
@@ -186,7 +187,7 @@ export default function Claims({ user }) {
                      </div>
                      <div className="flex flex-col items-end gap-1">
                         <span className={`font-bold ${claim.status === 'rejected' ? 'text-gray-500 line-through' : 'text-dark'}`}>
-                           ${claim.loss_calculated?.toFixed(2) || '0.00'}
+                           ₹{claim.loss_calculated?.toFixed(2) || '0.00'}
                         </span>
                         <ChevronRight size={16} className="text-gray-400" />
                      </div>

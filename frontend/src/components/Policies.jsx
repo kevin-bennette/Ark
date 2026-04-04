@@ -92,7 +92,7 @@ export default function Policies({ user }) {
                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1.5 border-b border-gray-200 pb-2">
                      <DollarSign size={12} className="text-amber-700" /> Max Payout
                    </p>
-                   <p className="text-lg font-bold text-dark mt-2">${(displayActive.weekly_premium * 500).toFixed(2)}</p>
+                   <p className="text-lg font-bold text-dark mt-2">₹{(displayActive.weekly_premium * 500).toFixed(2)}</p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4">
                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1.5 border-b border-gray-200 pb-2">

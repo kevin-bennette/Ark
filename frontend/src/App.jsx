@@ -152,6 +152,7 @@ function App() {
             <button key={id} onClick={() => setActiveTab(id)}
               className={`bottom-nav-item ${activeTab === id ? 'active' : ''}`}>
               <Icon size={20} />
+              
               <span>{label}</span>
             </button>
           ))}

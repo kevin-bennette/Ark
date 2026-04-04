@@ -158,7 +158,7 @@ export default function Dashboard({ user }) {
             </div>
             <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm text-center min-w-[200px]">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Potential Payout</p>
-              <p className="text-3xl font-extrabold text-dark mb-4">${(premium * 6).toFixed(2)}</p>
+              <p className="text-3xl font-extrabold text-dark mb-4">₹{(premium * 6).toFixed(2)}</p>
               <button 
                 onClick={handleSimulate} 
                 disabled={simulating}
