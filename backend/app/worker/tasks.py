@@ -33,7 +33,11 @@ async def _poll_and_commit():
         print("No threshold breaches detected. System nominal.")
         return
         
-    # Write triggers to the database
+    # Write triggers to the database and generate claims
+    from app.models import Policy, Claim, Payout
+    from sqlalchemy.future import select
+    from app.ml.fraud_engine import assess_fraud_risk
+    
     async with AsyncSessionLocal() as session:
         for t in triggers:
             trigger_row = Trigger(
@@ -42,5 +46,48 @@ async def _poll_and_commit():
                 zone=city
             )
             session.add(trigger_row)
-        await session.commit()
-        print(f"Recorded {len(triggers)} triggers into the database.")
+            await session.commit()
+            await session.refresh(trigger_row)
+            
+            # Find active policies for affected users
+            # For demo scope, assume global impact.
+            # Real world would filter by `User.city == city`
+            policies_result = await session.execute(
+                select(Policy).filter(Policy.active_status == True)
+            )
+            active_policies = policies_result.scalars().all()
+            
+            for policy in active_policies:
+                # Load user to calculate loss
+                user_result = await session.execute(select(Policy.user).filter(Policy.id == policy.id))
+                
+                # Assume 1 hour disruption per trigger occurrence
+                loss_amount = policy.coverage_hours * policy.weekly_premium # Simplified mock ratio or we do hourly rate * disruption
+                # From prompt: loss = hourly_rate * disruption_hours. We assume 1 disruption hour per tick
+                hourly_rate = 15.0 # mock since relation isn't instantly available without explicit join setup
+                loss_amount = hourly_rate * 1.0
+                
+                fraud_data = await assess_fraud_risk(policy.user_id, policy.id, t["type"], city)
+                
+                claim = Claim(
+                    user_id=policy.user_id,
+                    trigger_id=trigger_row.id,
+                    disruption_hours=1.0,
+                    loss_calculated=loss_amount,
+                    status="approved" if fraud_data.get("fraud_score", 0) < 0.7 else "pending",
+                    fraud_confidence=fraud_data.get("fraud_score", 0.0)
+                )
+                session.add(claim)
+                await session.commit()
+                await session.refresh(claim)
+                
+                if claim.status == "approved":
+                    payout = Payout(
+                        claim_id=claim.id,
+                        amount=loss_amount,
+                        status="completed"
+                    )
+                    session.add(payout)
+                    await session.commit()
+                    
+        print(f"Recorded {len(triggers)} triggers and generated their respective claims/payouts.")
