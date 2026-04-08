@@ -1,4 +1,4 @@
-# Ark (Arcutus) - Real-Time Income Stabilization Engine
+# **Ark** - A Real-Time Income Stabilization Engine
 
 Building a financial safety net for gig workers using AI, real-time data, and automated payouts for disruption-driven income loss. A parametric income protection platform for gig workers, offering dynamic premium calculation, automated disruption detection, and zero-touch claim processing.
 
